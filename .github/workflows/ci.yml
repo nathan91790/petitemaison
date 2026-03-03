@@ -31,9 +31,9 @@ jobs:
     defaults:
       run:
         working-directory: backend
-
     env:
       DATABASE_URL: postgresql://admin:admin123@localhost:5432/petitemaison?schema=public
+      JWT_SECRET: testsecret
 
     steps:
       - name: Checkout repository
