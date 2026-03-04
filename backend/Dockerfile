@@ -1,30 +1,23 @@
-version: "3.9"
+# Image officielle Node
+FROM node:20-alpine
 
-services:
-postgres:
-image: postgres:15
-container_name: petitemaison_postgres
-restart: always
-environment:
-POSTGRES_USER: ${POSTGRES_USER}
-POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-POSTGRES_DB: ${POSTGRES_DB}
-ports:
-- "5432:5432"
-volumes:
-- postgres_data:/var/lib/postgresql/data
+# Dossier de travail dans le container
+WORKDIR /app
 
-backend:
-build: ./backend
-container_name: petitemaison_backend
-restart: always
-depends_on:
-- postgres
-environment:
-DATABASE_URL: ${DATABASE_URL}
-JWT_SECRET: ${JWT_SECRET}
-ports:
-- "3000:3000"
+# Copier uniquement les fichiers nécessaires pour installer les dépendances
+COPY package*.json ./
 
-volumes:
-postgres_data:
+# Installer les dépendances
+RUN npm install
+
+# Copier le reste du code
+COPY . .
+
+# Générer le client Prisma
+RUN npx prisma generate
+
+# Exposer le port de l'application
+EXPOSE 3000
+
+# Commande de démarrage
+CMD ["node", "src/server.js"]
