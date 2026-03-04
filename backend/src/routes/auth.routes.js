@@ -63,14 +63,14 @@ router.post("/login", async (req, res) => {
 
         //gestion des erreurs utilisateur non trouvé
         if (!user) {
-            return res.status(401).json({ message: "Identifiant invalides" });
+            return res.status(401).json({ message: "Identifiants invalides" });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         //gestion des erreurs mot de passe invalide
         if (!isPasswordValid) {
-            return res.status(401).json({ message: "Identifiant invalides" });
+            return res.status(401).json({ message: "Identifiants invalides" });
         }
 
         //génération du token
