@@ -1,5 +1,5 @@
 # Image officielle Node
-FROM node:20-alpine
+FROM node:20
 
 # Dossier de travail dans le container
 WORKDIR /app
@@ -20,4 +20,4 @@ RUN npx prisma generate
 EXPOSE 3000
 
 # Commande de démarrage
-CMD ["node", "src/server.js"]
+CMD sh -c "npx prisma migrate deploy && node src/server.js"
