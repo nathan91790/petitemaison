@@ -105,7 +105,9 @@ jobs:
 
       - name: Configure kubeconfig
         run: |
-          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig
+          cat <<EOF > kubeconfig
+          ${{ secrets.KUBE_CONFIG }}
+          EOF
 
       - name: Deploy to Kubernetes
         run: |
