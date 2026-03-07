@@ -89,26 +89,3 @@ jobs:
       - name: Build frontend image
         run: |
           docker build -t petitemaison-frontend ./frontend
-
-  deploy:
-
-    needs: docker-build
-    runs-on: ubuntu-latest
-
-    steps:
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v4
-
-      - name: Configure kubeconfig
-        run: |
-          cat <<EOF > kubeconfig
-          ${{ secrets.KUBE_CONFIG }}
-          EOF
-
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl --kubeconfig=kubeconfig apply -f k8s/
