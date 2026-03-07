@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import React from "react";
 
 function Register() {
+
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -11,11 +12,13 @@ function Register() {
     const [error, setError] = useState("");
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
         setError("");
         setMessage("");
 
         try {
+
             const response = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: {
@@ -32,46 +35,80 @@ function Register() {
 
             setMessage("Inscription réussie !");
             setTimeout(() => navigate("/login"), 1500);
+
         } catch (err) {
+
             setError("Erreur de connexion au serveur");
+
         }
+
     };
+
     return (
-        <div>
-            <h1>Register</h1>
 
-            <form onSubmit={handleSubmit} style={{ maxWidth: "400px" }}>
-                <div style={{ marginBottom: "15px" }}>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        style={{ width: "100%", padding: "8px" }}
-                    />
-                </div>
+        <div className="container flex justify-center">
 
-                <div style={{ marginBottom: "15px" }}>
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        style={{ width: "100%", padding: "8px" }}
-                    />
-                </div>
+            <div className="product-card w-full max-w-md">
 
-                <button type="submit" style={{ padding: "8px 16px" }}>
-                    S'inscrire
-                </button>
-            </form>
+                <h1 className="text-3xl font-bold text-center title-glow mb-6">
+                    Inscription
+                </h1>
 
-            {message && <p style={{ color: "green" }}>{message}</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+                <form onSubmit={handleSubmit} className="form">
+
+                    <div>
+                        <label className="text-sm text-gray-400">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="text-sm text-gray-400">
+                            Mot de passe
+                        </label>
+
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="btn-primary"
+                    >
+                        S'inscrire
+                    </button>
+
+                </form>
+
+                {message && (
+                    <p className="success text-center">
+                        {message}
+                    </p>
+                )}
+
+                {error && (
+                    <p className="text-red-400 text-center mt-3">
+                        {error}
+                    </p>
+                )}
+
+            </div>
+
         </div>
+
     );
+
 }
 
 export default Register;

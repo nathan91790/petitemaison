@@ -1,59 +1,65 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import React from "react";
 
 function Products() {
+
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
 
     useEffect(() => {
-        fetch("/api/products")
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("Erreur lors du chargement");
-                }
-                return res.json();
-            })
-            .then(data => {
-                setProducts(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                setError(err.message);
-                setLoading(false);
-            });
+
+        axios.get("/api/products")
+            .then(res => setProducts(res.data));
+
     }, []);
 
-    if (loading) return <p>Chargement...</p>;
-    if (error) return <p style={{ color: "red" }}>{error}</p>;
-
     return (
-        <div>
-            <h1>Tous les produits</h1>
 
-            <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-                gap: "20px",
-                marginTop: "30px"
-            }}>
+        <div className="container">
+
+            <h1 className="text-4xl font-bold text-center title-glow mb-16">
+                Nos produits
+            </h1>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
                 {products.map(product => (
+
                     <div
                         key={product.id}
-                        style={{
-                            background: "#2a2a2a",
-                            padding: "15px",
-                            borderRadius: "8px"
-                        }}
+                        className="product-card"
                     >
-                        <h3>{product.name}</h3>
-                        <p>{product.description}</p>
-                        <p><strong>{product.price} €</strong></p>
-                        <p>Stock : {product.stock}</p>
+
+                        <h2 className="text-xl font-bold mb-3">
+                            {product.name}
+                        </h2>
+
+                        <p className="text-gray-400 mb-4">
+                            {product.description}
+                        </p>
+
+                        <div className="flex justify-between items-center">
+
+                            <p className="text-purple-400 font-bold text-lg">
+                                {product.price} €
+                            </p>
+
+                            <span className="text-sm text-gray-500">
+                                Stock : {product.stock}
+                            </span>
+
+                        </div>
+
                     </div>
+
                 ))}
+
             </div>
+
         </div>
+
     );
+
 }
 
 export default Products;

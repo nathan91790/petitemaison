@@ -20,8 +20,8 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
             data: {
                 name,
                 description,
-                price,
-                stock,
+                price: Number(price),
+                stock: Number(stock),
             },
         });
 

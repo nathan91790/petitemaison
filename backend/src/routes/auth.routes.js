@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 // Route d'inscription
+console.log("AUTH ROUTES FILE LOADED");
 router.post("/register", async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -84,6 +85,10 @@ router.post("/login", async (req, res) => {
         res.json({
             message: "Connexion reussie",
             token,
+            user: {
+                email: user.email,
+                role: user.role,
+            }
         });
     } catch (error) {
         console.error(error);

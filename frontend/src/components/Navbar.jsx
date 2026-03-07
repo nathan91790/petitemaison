@@ -2,72 +2,68 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
+
     const { user, logout } = useAuth();
 
     return (
-        <nav style={{
-            width: "100%",
-            background: "#111",
-            padding: "15px 40px",
-            boxSizing: "border-box"
-        }}>
-            <div style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                maxWidth: "1100px",
-                margin: "0 auto"
-            }}>
+
+        <nav className="bg-black/80 backdrop-blur-md border-b border-purple-900 py-6">
+
+            <div className="max-w-6xl mx-auto flex items-center px-6">
+
+                {/* LOGO */}
+
                 <Link
                     to="/"
-                    style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        textDecoration: "none",
-                        fontSize: "18px"
-                    }}
+                    className="text-3xl font-bold title-glow"
                 >
-                    Petite Maison 👻
+                    👻 PetiteMaison
                 </Link>
 
-                <div>
+                {/* ZONE UTILISATEUR */}
+
+                <div className="ml-auto mr-16 flex items-center gap-8">
 
                     {!user && (
                         <>
-                            <Link to="/login" style={linkStyle}>Login</Link>
-                            <Link to="/register" style={linkStyle}>Register</Link>
+                            <Link
+                                to="/login"
+                                className="hover:text-purple-400 text-lg transition"
+                            >
+                                Login
+                            </Link>
+
+                            <Link
+                                to="/register"
+                                className="btn-primary"
+                            >
+                                Register
+                            </Link>
                         </>
                     )}
 
                     {user && (
                         <>
-                            <span style={{ color: "white", marginLeft: "20px" }}>
+                            <span className="text-gray-400">
                                 {user.email}
                             </span>
+
                             <button
                                 onClick={logout}
-                                style={linkStyle}
+                                className="btn-primary"
                             >
                                 Logout
                             </button>
                         </>
                     )}
+
                 </div>
+
             </div>
+
         </nav>
+
     );
 }
-
-const linkStyle = {
-    color: "white",
-    marginLeft: "20px",
-    textDecoration: "none"
-};
-
-const buttonStyle = {
-    marginLeft: "20px",
-    padding: "5px 10px",
-    cursor: "pointer"
-};
 
 export default Navbar;
