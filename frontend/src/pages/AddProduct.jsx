@@ -1,17 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import React from "react";
 
 function AddProduct() {
 
     const navigate = useNavigate();
 
+    const [preview, setPreview] = useState("");
+
     const [formData, setFormData] = useState({
         name: "",
         description: "",
         price: "",
-        stock: ""
+        stock: "",
+        imageUrl: ""
     });
 
     const [success, setSuccess] = useState("");
@@ -34,6 +37,29 @@ function AddProduct() {
         });
 
     };
+
+    const onDrop = async (acceptedFiles) => {
+
+        const file = acceptedFiles[0];
+
+        setPreview(URL.createObjectURL(file));
+
+        const formDataUpload = new FormData();
+        formDataUpload.append("image", file);
+
+        const res = await axios.post("/api/upload", formDataUpload);
+
+        setFormData({
+            ...formData,
+            imageUrl: res.data.imageUrl
+        });
+
+    };
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        accept: { "image/*": [] }
+    });
 
     const handleSubmit = async (e) => {
 
@@ -60,8 +86,11 @@ function AddProduct() {
                 name: "",
                 description: "",
                 price: "",
-                stock: ""
+                stock: "",
+                imageUrl: ""
             });
+
+            setPreview("");
 
             setSuccess("Produit créé avec succès !");
 
@@ -91,6 +120,7 @@ function AddProduct() {
                         placeholder="Nom du produit"
                         value={formData.name}
                         onChange={handleChange}
+                        required
                     />
 
                     <textarea
@@ -98,6 +128,7 @@ function AddProduct() {
                         placeholder="Description"
                         value={formData.description}
                         onChange={handleChange}
+                        required
                     />
 
                     <input
@@ -106,6 +137,7 @@ function AddProduct() {
                         placeholder="Prix (€)"
                         value={formData.price}
                         onChange={handleChange}
+                        required
                     />
 
                     <input
@@ -114,7 +146,28 @@ function AddProduct() {
                         placeholder="Stock"
                         value={formData.stock}
                         onChange={handleChange}
+                        required
                     />
+
+                    {/* Drag & Drop */}
+
+                    <div
+                        {...getRootProps()}
+                        className="border-2 border-dashed border-purple-500 p-8 rounded-lg text-center cursor-pointer hover:bg-purple-900/20 transition"
+                    >
+                        <input {...getInputProps()} />
+                        <p className="text-gray-400">
+                            Glissez une image ici ou cliquez
+                        </p>
+                    </div>
+
+                    {preview && (
+                        <img
+                            src={preview}
+                            alt="preview"
+                            className="mt-4 rounded-lg"
+                        />
+                    )}
 
                     <button
                         className="btn-primary"

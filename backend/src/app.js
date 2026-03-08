@@ -1,44 +1,58 @@
 const express = require("express");
-const helmet = require("helmet");
 const cors = require("cors");
+const path = require("path");
+
 const authRoutes = require("./routes/auth.routes");
 const authMiddleware = require("./middleware/auth.middleware");
 const productRoutes = require("./routes/product.routes");
+const uploadRoutes = require("./routes/upload.routes");
 
-// Initialisation de l'application
 const app = express();
 
-// Middleware Globaux
-app.use(helmet());
+/* =========================
+   PATH UPLOADS
+========================= */
 
-// cela sert a dire au serveur d'accepter les requete du frontend uniquement pas des autres
-app.use(
-    cors({
-        origin: "http://localhost:5173", // futur Frontend
-        methods: ["GET", "POST", "PUT", "DELETE"],
-    })
-);
+const uploadsPath = path.resolve("uploads");
 
-// Middleware pour parser le JSON
+console.log("WORKDIR:", process.cwd());
+console.log("UPLOADS PATH:", uploadsPath);
+
+/* =========================
+   CORS
+========================= */
+
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+}));
+
+/* =========================
+   PARSER JSON
+========================= */
+
 app.use(express.json());
-// Routes
+
+/* =========================
+   SERVIR LES IMAGES
+========================= */
+
+app.use("/uploads", express.static(uploadsPath));
+
+/* =========================
+   ROUTES API
+========================= */
+
 app.use("/api/auth", authRoutes);
-
-// Route protégée
-app.get("/api/protected", authMiddleware, (req, res) => { 
-    res.json({
-        message: "Route protégée accessible",
-        user: req.user, 
-    }); 
-});
-
-// Route test
-app.get("/", (req, res) => {
-    res.json({ message: "API Petite Maison de l'Épouvante V1" });
-});
-
-// Routes produits
+app.use("/api/upload", uploadRoutes);
 app.use("/api/products", productRoutes);
 
-module.exports = app;
+/* =========================
+   ROUTE TEST
+========================= */
 
+app.get("/", (req, res) => {
+    res.json({ message: "API Petite Maison de l'Épouvante" });
+});
+
+module.exports = app;

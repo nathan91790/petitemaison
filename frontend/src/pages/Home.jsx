@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import React from "react";
 
 function Home() {
 
@@ -57,26 +56,44 @@ function Home() {
                 Produits populaires
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
                 {products.map(product => (
 
-                    <div
-                        key={product.id}
-                        className="product-card"
-                    >
+                    <div key={product.id} className="product-card">
 
-                        <h3 className="text-xl font-bold mb-3">
-                            {product.name}
-                        </h3>
+                        {/* IMAGE */}
+                        <div className="product-image">
 
-                        <p className="text-gray-400 mb-4">
-                            {product.description}
-                        </p>
+                            <img
+                                src={product.imageUrl}
+                                alt={product.name}
+                            />
 
-                        <p className="text-purple-400 font-bold text-lg">
-                            {product.price} €
-                        </p>
+                        </div>
+
+                        {/* CONTENU */}
+                        <div className="product-content">
+
+                            <h2>{product.name}</h2>
+
+                            <p>
+                                {product.description}
+                            </p>
+
+                            <div className="product-bottom">
+
+                                <span className="price">
+                                    {product.price} €
+                                </span>
+
+                                <span className="stock">
+                                    Stock : {product.stock}
+                                </span>
+
+                            </div>
+
+                        </div>
 
                     </div>
 

@@ -1,52 +1,51 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import React from "react";
 
 function Products() {
 
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-
         axios.get("/api/products")
-            .then(res => setProducts(res.data));
-
+            .then(res => setProducts(res.data))
+            .catch(err => console.error(err));
     }, []);
 
     return (
 
         <div className="container">
 
-            <h1 className="text-4xl font-bold text-center title-glow mb-16">
+            <h1 className="text-4xl font-bold text-center title-glow mb-12">
                 Nos produits
             </h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "30px"
+            }}>
 
                 {products.map(product => (
 
-                    <div
-                        key={product.id}
-                        className="product-card"
-                    >
+                    <div key={product.id} className="product-card">
 
-                        <h2 className="text-xl font-bold mb-3">
-                            {product.name}
-                        </h2>
+                        <div className="product-image">
+                            <img src={product.imageUrl} alt={product.name} />
+                        </div>
 
-                        <p className="text-gray-400 mb-4">
-                            {product.description}
-                        </p>
+                        <div className="product-content">
 
-                        <div className="flex justify-between items-center">
+                            <h2>{product.name}</h2>
 
-                            <p className="text-purple-400 font-bold text-lg">
-                                {product.price} €
-                            </p>
+                            <p>{product.description}</p>
 
-                            <span className="text-sm text-gray-500">
-                                Stock : {product.stock}
-                            </span>
+                            <div className="product-bottom">
+
+                                <span className="price">{product.price} €</span>
+
+                                <span className="stock">Stock : {product.stock}</span>
+
+                            </div>
 
                         </div>
 

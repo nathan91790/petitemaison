@@ -8,10 +8,10 @@ const router = express.Router();
 // Création produit (Admin UNIQUEMENT)
 router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
     try {
-        const { name, description, price, stock } = req.body;
+        const { name, description, price, stock, imageUrl } = req.body;
 
         //gestion des erreurs
-        if (!name || !description || !price || !stock == null) {
+        if (!name || !description || price == null || stock == null || !imageUrl) {
             return res.status(400).json({ message: "Champs requis manquants" });
         }
 
@@ -22,6 +22,7 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
                 description,
                 price: Number(price),
                 stock: Number(stock),
+                imageUrl,
             },
         });
 
@@ -37,10 +38,19 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
 //liste produits (publique)
 router.get("/", async (req, res) => {
     try {
+
         const products = await prisma.product.findMany();
+
+        console.log("Products:", products);
+
         res.json(products);
+
     } catch (error) {
-        res.status(500).json({ error: "Erreur serveur" });
+
+        console.error("ERREUR PRODUCTS :", error);
+
+        res.status(500).json({ error: error.message });
+
     }
 });
 

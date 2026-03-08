@@ -13,6 +13,9 @@ RUN npm install
 # Copier le reste du code
 COPY . .
 
+# Copier les images
+COPY uploads ./uploads
+
 # Générer le client Prisma
 RUN npx prisma generate
 
