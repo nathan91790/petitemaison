@@ -23,8 +23,8 @@ console.log("UPLOADS PATH:", uploadsPath);
 ========================= */
 
 app.use(cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+   origin: "*",
+   methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
 /* =========================
@@ -48,11 +48,22 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/products", productRoutes);
 
 /* =========================
+   ROUTE PROTECTED (tests)
+========================= */
+
+app.get("/api/protected", authMiddleware, (req, res) => {
+
+   res.json({
+      message: "Protected route accessed",
+      user: req.user
+   });
+
+});
+
+/* =========================
    ROUTE TEST
 ========================= */
 
 app.get("/", (req, res) => {
-    res.json({ message: "API Petite Maison de l'Épouvante" });
+   res.json({ message: "API Petite Maison de l'Épouvante" });
 });
-
-module.exports = app;
