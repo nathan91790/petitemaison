@@ -145,10 +145,11 @@ describe("Auth API", () => {
             .post("/api/products")
             .set("Authorization", `Bearer ${token}`)
             .send({
-                name: "Figurine test",
-                description: "Edition Spéciale",
-                price: 100,
+                name: "Figurine test aléatoire " + Date.now(),
+                description: "Edition Spéciale aléatoire",
+                price: 50,
                 stock: 10,
+                imageUrl: "http://localhost:3000/uploads/default-product.png"
             });
 
         expect(response.statusCode).toBe(201);
