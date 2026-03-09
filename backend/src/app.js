@@ -67,3 +67,9 @@ app.get("/api/protected", authMiddleware, (req, res) => {
 app.get("/", (req, res) => {
    res.json({ message: "API Petite Maison de l'Épouvante" });
 });
+
+/* =========================
+   EXPORT
+========================= */
+
+module.exports = app;
