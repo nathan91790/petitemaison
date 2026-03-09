@@ -50,6 +50,11 @@ jobs:
           cd backend
           npm install
 
+      - name: Run backend lint
+        run: |
+          cd backend
+          npm run lint
+
       - name: Run Prisma migrations
         run: |
           cd backend
