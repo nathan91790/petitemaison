@@ -9,7 +9,6 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
     try {
         const { name, description, price, stock, imageUrl } = req.body;
 
-        //gestion des erreurs
         if (!name || !description || price == null || stock == null) {
             return res.status(400).json({ message: "Champs requis manquants" });
         }
@@ -20,7 +19,7 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res) => {
                 description,
                 price: Number(price),
                 stock: Number(stock),
-                imageUrl: imageUrl || null
+                imageUrl: imageUrl || "/uploads/default-product.png"
             },
         });
 
