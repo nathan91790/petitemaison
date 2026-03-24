@@ -107,7 +107,7 @@ jobs:
           docker build -t petitemaison-frontend ./frontend
 
       - name: Scan backend image with Trivy
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: 'petitemaison-backend'
           format: 'table'
@@ -115,7 +115,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
       - name: Scan frontend image with Trivy
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: 'petitemaison-frontend'
           format: 'table'
